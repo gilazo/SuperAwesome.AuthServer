@@ -1,6 +1,6 @@
 namespace SuperAwesomeAuthServer.Presentation.Models
 {
-    public class Token
+    public sealed class Token
     {
         public Token(string value)
         {

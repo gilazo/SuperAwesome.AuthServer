@@ -1,6 +1,6 @@
 namespace SuperAwesomeAuthServer.Presentation.Models
 {
-    public class Message
+    public sealed class Message
     {
         public Message(string value)
         {

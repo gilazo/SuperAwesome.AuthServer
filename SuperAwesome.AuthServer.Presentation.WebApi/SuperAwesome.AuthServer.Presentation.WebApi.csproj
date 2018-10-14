@@ -14,7 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SuperAwesomeAuthServer.Application\SuperAwesomeAuthServer.Application.csproj" />
+    <ProjectReference Include="..\SuperAwesome.AuthServer.Application\SuperAwesome.AuthServer.Application.csproj" />
+    <ProjectReference Include="..\SuperAwesome.AuthServer.Infrastructure\SuperAwesome.AuthServer.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

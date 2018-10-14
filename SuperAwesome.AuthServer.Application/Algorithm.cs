@@ -1,4 +1,4 @@
-namespace SuperAwesomeAuthServer.Application
+namespace SuperAwesome.AuthServer.Application
 {
     public class Algorithm
     {

@@ -11,8 +11,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Serialization;
+using SuperAwesome.AuthServer.Application;
+using SuperAwesome.AuthServer.Application.Users;
+using SuperAwesome.AuthServer.Infrastructure;
 
-namespace SuperAwesomeAuthServer.Presentation
+namespace SuperAwesome.AuthServer.Presentation.WebApi
 {
     public class Startup
     {
@@ -33,6 +36,12 @@ namespace SuperAwesomeAuthServer.Presentation
                     opt.SerializerSettings.ContractResolver = new DefaultContractResolver { NamingStrategy = new CamelCaseNamingStrategy() };
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddTransient<Algorithm>(_ => "HS256");
+            services.AddTransient<IHeader<string>>(s => new JwtHeader(s.GetService<Algorithm>()));
+            services.AddTransient<ISerialize<Claims>, JsonSerializer<Claims>>();
+            services.AddTransient<Secret>(_ => new Secret("iloveauth"));
+            services.AddTransient<IGet<User>, DemoUsers>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,8 +1,9 @@
+using System;
 using System.Security.Cryptography;
 using System.Text;
 using NeoSmart.Utils;
 
-namespace SuperAwesomeAuthServer.Application
+namespace SuperAwesome.AuthServer.Application
 {
     public sealed class HashHMACSHA256 : IHash
     {   
@@ -21,12 +22,11 @@ namespace SuperAwesomeAuthServer.Application
         {
             var header = UrlBase64.Encode(Encoding.UTF8.GetBytes(_header));
             var payload = UrlBase64.Encode(Encoding.UTF8.GetBytes(_payload));
-            var data = $"{header}.{payload}";
                         
             string signature;
-            using (var car = new HMACSHA256(Encoding.ASCII.GetBytes(_secret)))
+            using (var car = new HMACSHA256(Encoding.UTF8.GetBytes(_secret)))
             {
-                signature = UrlBase64.Encode(car.ComputeHash(Encoding.ASCII.GetBytes(data)));
+                signature = UrlBase64.Encode(car.ComputeHash(Encoding.UTF8.GetBytes($"{header}.{payload}")));
                 return $"{header}.{payload}.{signature}";
             }             
         }

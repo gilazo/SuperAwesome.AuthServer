@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace SuperAwesomeAuthServer.Presentation
+namespace SuperAwesome.AuthServer.Presentation.WebApi
 {
     public class Program
     {

@@ -1,18 +1,18 @@
-namespace SuperAwesomeAuthServer.Application
+namespace SuperAwesome.AuthServer.Application
 {
-    public sealed class Jwt : IHeader<string>
+    public sealed class JwtHeader : IHeader<string>
     {
         private readonly string _header;
 
-        public Jwt(Algorithm algorithm)
+        public JwtHeader(Algorithm algorithm)
             : this("{ \"alg\": \"" + algorithm + "\", \"typ\": \"JWT\" }") {}
 
-        private Jwt(string header)
+        private JwtHeader(string header)
         {
             _header = header;
         }
 
-        public string Get()
+        public string Header()
         {
             return _header;
         }

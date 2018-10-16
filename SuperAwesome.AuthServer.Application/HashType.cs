@@ -1,7 +1,8 @@
 namespace SuperAwesome.AuthServer.Application
 {
-    public interface IHash
+    public enum HashType
     {
-        string Hash();
+        None,
+        HS256
     }
 }

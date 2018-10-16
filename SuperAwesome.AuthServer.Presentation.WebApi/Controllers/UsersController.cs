@@ -4,6 +4,7 @@ using SuperAwesome.AuthServer.Application;
 using SuperAwesome.AuthServer.Application.Users;
 using SuperAwesome.AuthServer.Infrastructure;
 using SuperAwesome.AuthServer.Presentation.WebApi.Models;
+using SuperAwesome.AuthServer.Presentation.WebApi.Services;
 
 namespace SuperAwesome.AuthServer.Presentation.WebApi.Controllers
 {
@@ -12,14 +13,14 @@ namespace SuperAwesome.AuthServer.Presentation.WebApi.Controllers
     public sealed class UsersController : ControllerBase
     {
         private readonly IGet<User> _users;
-        private readonly IHeader<string> _header;
+        private readonly HashFactory _factory;
         private readonly Secret _secret;
         private readonly ISerialize<Claims> _serializer;
 
-        public UsersController(IGet<User> users, IHeader<string> header, Secret secret, ISerialize<Claims> serializer)
+        public UsersController(IGet<User> users, HashFactory factory, Secret secret, ISerialize<Claims> serializer)
         {
             _users = users;
-            _header = header;
+            _factory = factory;
             _secret = secret;
             _serializer = serializer;
         }
@@ -27,24 +28,18 @@ namespace SuperAwesome.AuthServer.Presentation.WebApi.Controllers
         [HttpPost]
         public ActionResult Post([FromBody] UsersTokenRequest request)
         {
-            try
-            {
-                return Ok(
-                    new Response<string>(
-                        new Handler(
-                            request.ToUser(),
-                            _users,
-                            _header,
-                            _secret,
-                            _serializer
-                        ).Token()
-                    )
-                );
-            }
-            catch(Exception ex)
-            {
-                return Ok(new Response(ex.Message));
-            }            
+            return Ok(
+              new RequestHandler<string>().Handle(
+                new Handler(
+                  request.ToUser(),
+                  _users,
+                  _secret,
+                  _serializer,
+                  _factory
+                )
+                .Token
+              )
+            );
         }
     }
 }

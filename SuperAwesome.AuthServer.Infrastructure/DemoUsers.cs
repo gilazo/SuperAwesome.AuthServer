@@ -12,7 +12,7 @@ namespace SuperAwesome.AuthServer.Infrastructure
         private readonly List<User> _users;
 
         public DemoUsers()
-            : this(new List<User> { new User("Jon", "Doe", "jon.doe@jd.com", "iloveauth", new[] {""}) }) { }
+            : this(new List<User> { new User("Jon", "Doe", "jon.doe@jd.com", "iloveauth", new[] { "" }) }) { }
 
         public DemoUsers(List<User> users)
         {

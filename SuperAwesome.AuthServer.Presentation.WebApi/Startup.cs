@@ -37,10 +37,11 @@ namespace SuperAwesome.AuthServer.Presentation.WebApi
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddTransient<Algorithm>(_ => "HS256");
+            services.AddTransient<Algorithm>(_ => Configuration.GetValue<string>("HashType"));
             services.AddTransient<IHeader<string>>(s => new JwtHeader(s.GetService<Algorithm>()));
             services.AddTransient<ISerialize<Claims>, JsonSerializer<Claims>>();
-            services.AddTransient<Secret>(_ => new Secret("iloveauth"));
+            services.AddTransient<Secret>(_ => new Secret(Configuration.GetValue<string>("Secret")));
+            services.AddTransient<HashFactory>(s => new HashFactory(Enum.Parse<HashType>(s.GetService<Algorithm>()), s.GetService<IHeader<string>>()));
             services.AddTransient<IGet<User>, DemoUsers>();
         }
 

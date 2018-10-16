@@ -6,19 +6,20 @@ namespace SuperAwesome.AuthServer.Application.Users
     {
         private readonly User _user;
         private readonly IGet<User> _users;
-        private readonly IHeader<string> _header;
         private readonly string _secret;
         private readonly ISerialize<Claims> _serialzer;
+        private readonly HashFactory _factory;
 
-        public Handler(User user, IGet<User> users, IHeader<string> header, Secret secret, ISerialize<Claims> serializer)
-            : this(user, users, header, secret.Value, serializer) { }
-        public Handler(User user, IGet<User> users, IHeader<string> header, string secret, ISerialize<Claims> serializer)
+        public Handler(User user, IGet<User> users, Secret secret, ISerialize<Claims> serializer, HashFactory factory)
+            : this(user, users, secret.Value, serializer, factory) { }
+
+        public Handler(User user, IGet<User> users, string secret, ISerialize<Claims> serializer, HashFactory factory)
         {
             _user = user;
             _users = users;
-            _header = header;
             _secret = secret;
             _serialzer = serializer;
+            _factory = factory;
         }
 
         public string Token()
@@ -26,9 +27,9 @@ namespace SuperAwesome.AuthServer.Application.Users
             var user = _users.Get(u => u.Email == _user.Email).First();
             if (user.Password != _user.Password)
                 return string.Empty;
-            
+
             var claims = new Claims(user.Name, "user", user.Name, user.Email, user.Scopes);
-            return new HashHMACSHA256(_header.Header(), _serialzer.Serialize(claims), _secret).Hash();
+            return _factory.Create(_serialzer.Serialize(claims), _secret).Hash();
         }
     }
 }

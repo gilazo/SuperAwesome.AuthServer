@@ -13,7 +13,7 @@ namespace SuperAwesome.AuthServer.Application.Users
             Password = password;
             Scopes = scopes;
         }
-        
+
         public string FirstName { get; }
         public string LastName { get; }
         public string Email { get; }

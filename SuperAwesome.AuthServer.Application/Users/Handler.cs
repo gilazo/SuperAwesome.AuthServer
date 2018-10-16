@@ -26,7 +26,7 @@ namespace SuperAwesome.AuthServer.Application.Users
         public async Task<string> TokenAsync()
         {
             var user = _users.Get(u => u.Email == _user.Email).First();
-            if (user.Password != _user.Password)
+            if (user?.Password != _user.Password)
                 return string.Empty;
 
             var claims = new Claims(user.Name, "user", user.Name, user.Email, user.Scopes);

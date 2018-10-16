@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SuperAwesome.AuthServer.Application.Users
 {
@@ -22,14 +23,14 @@ namespace SuperAwesome.AuthServer.Application.Users
             _factory = factory;
         }
 
-        public string Token()
+        public async Task<string> TokenAsync()
         {
             var user = _users.Get(u => u.Email == _user.Email).First();
             if (user.Password != _user.Password)
                 return string.Empty;
 
             var claims = new Claims(user.Name, "user", user.Name, user.Email, user.Scopes);
-            return _factory.Create(_serialzer.Serialize(claims), _secret).Hash();
+            return await Task.FromResult(_factory.Create(_serialzer.Serialize(claims), _secret).Hash());
         }
     }
 }

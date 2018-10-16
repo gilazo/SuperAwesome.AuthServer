@@ -5,7 +5,7 @@ namespace SuperAwesome.AuthServer.Application
         private readonly string _header;
 
         public JwtHeader(Algorithm algorithm)
-            : this("{ \"alg\": \"" + algorithm + "\", \"typ\": \"JWT\" }") {}
+            : this("{ \"alg\": \"" + algorithm + "\", \"typ\": \"JWT\" }") { }
 
         private JwtHeader(string header)
         {

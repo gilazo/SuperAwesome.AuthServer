@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SuperAwesome.AuthServer.Application;
 using SuperAwesome.AuthServer.Application.Users;
@@ -26,10 +27,10 @@ namespace SuperAwesome.AuthServer.Presentation.WebApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult Post([FromBody] UsersTokenRequest request)
+        public async Task<ActionResult> PostAsync([FromBody] UsersTokenRequest request)
         {
             return Ok(
-              new RequestHandler<string>().Handle(
+              await new RequestHandler<string>().HandleAsync(
                 new Handler(
                   request.ToUser(),
                   _users,
@@ -37,7 +38,7 @@ namespace SuperAwesome.AuthServer.Presentation.WebApi.Controllers
                   _serializer,
                   _factory
                 )
-                .Token
+                .TokenAsync
               )
             );
         }
